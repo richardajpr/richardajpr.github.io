@@ -3,50 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Richard Paulraj</title>
+    <title>Richard</title>
     <style>
         /* Resetting default margin and padding */
         body, html {
             margin: 0;
             padding: 0;
             height: 100%;
+            overflow: hidden; /* Prevents scrollbars */
+            font-family: Arial, sans-serif;
         }
 
-        /* Container to center everything */
+        /* Gradient background */
         .container {
             position: relative;
-            width: 100%;
+            width: 100vw;
             height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #f0f0f0; /* Background color to enhance image visibility */
+            overflow: hidden;
+            background: #000000;
+            background-size: 400% 400%;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 0%; }
+            50% { background-position: 100% 100%; }
+            100% { background-position: 0% 0%; }
         }
 
         /* Collage container styling */
         .collage {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-template-rows: repeat(3, 1fr);
-            width: 80%;
-            height: 80%;
             position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
         }
 
         /* Individual image styling */
         .collage-img {
-            width: 100%;
-            height: 100%;
+            position: absolute;
+            width: 30%;
+            height: auto;
             object-fit: cover;
-            border: 2px solid #fff; /* Optional: adds a border around images */
+            border: 2px solid; /* Colorful border */
+            transition: transform 0.5s, filter 0.5s, border-color 0.5s;
+            cursor: pointer; /* Indicates image is clickable */
         }
+
+        /* Colorful borders */
+        .collage-img:nth-child(1) { border-color: #ffffff; }
+        .collage-img:nth-child(2) { border-color: #ffffff; }
+        .collage-img:nth-child(3) { border-color: #ffffff; }
+        .collage-img:nth-child(4) { border-color: #ffffff; }
+        .collage-img:nth-child(5) { border-color: #ffffff; }
+        .collage-img:nth-child(6) { border-color: #ffffff; }
+
+        /* Image-specific positioning */
+        .img1 { top: 15%; left: 10%; width: 30%; height: auto; }
+        .img2 { top: 5%; left: 37.5%; width:35%; height: auto; }
+        .img3 { top: 50%; left: 5%; width: 30%; height: auto; }
+        .img4 { top: 30%; left: 70%; width: 30%; height: auto; }
+        .img5 { top: 70%; left: 30%; width: 40%; height: auto; }
+        .img6 { top: 55%; left: 60%; width: 35%; height: auto; }
 
         /* Overlay name styling */
         .name-overlay {
             position: absolute;
             font-size: 3em;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6);
+            color: #D3D3D3;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.8); /* Slightly larger and softer shadow for better readability */
             text-align: center;
             width: 100%;
             top: 50%;
@@ -56,26 +87,84 @@
             pointer-events: none;
         }
 
-        /* Responsive styling for different devices */
+
+
+        /* Modal styling */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed;
+            z-index: 20;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            position: relative;
+            width: 80%;
+            max-width: 1000px;
+            margin: auto;
+        }
+
+        .modal-content img {
+            width: 100%;
+            height: auto;
+            border: none;
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            color: white;
+            font-size: 35px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* Responsive styling */
         @media (max-width: 768px) {
-            .collage {
-                grid-template-columns: repeat(2, 1fr);
-                grid-template-rows: repeat(3, 1fr);
-            }
+            .img1 { width: 40%; }
+            .img2 { width: 45%; }
+            .img3 { width: 45%; }
+            .img4 { width: 45%; }
+            .img5 { width: 50%; }
+            .img5 { width: 55%; }
 
             .name-overlay {
                 font-size: 2.5em;
             }
+
+            .modal-content {
+                width: 90%;
+            }
         }
 
         @media (max-width: 480px) {
-            .collage {
-                grid-template-columns: repeat(1, 1fr);
-                grid-template-rows: repeat(5, 1fr);
-            }
+            .img1 { width: 50%; }
+            .img2 { width: 55%; }
+            .img3 { width: 55%; }
+            .img4 { width: 55%; }
+            .img5 { width: 60%; }
 
             .name-overlay {
                 font-size: 2em;
+            }
+
+            .modal-content {
+                width: 95%;
             }
         }
     </style>
@@ -83,13 +172,95 @@
 <body>
     <div class="container">
         <div class="collage">
-            <img src="image1.jpg" alt="Image 1" class="collage-img">
-            <img src="image2.jpg" alt="Image 2" class="collage-img">
-            <img src="image3.jpg" alt="Image 3" class="collage-img">
-            <img src="image4.jpg" alt="Image 4" class="collage-img">
-            <img src="image5.jpg" alt="Image 5" class="collage-img">
+            <img src="image1.jpg" alt="Image 1" class="collage-img img1">
+            <img src="image2.jpg" alt="Image 2" class="collage-img img2">
+            <img src="image3.jpg" alt="Image 3" class="collage-img img3">
+            <img src="image4.jpg" alt="Image 4" class="collage-img img4">
+            <img src="image5.jpg" alt="Image 5" class="collage-img img5">
+            <img src="image6.jpg" alt="Image 6" class="collage-img img6">
+
         </div>
         <div class="name-overlay">Richard Paulraj</div>
     </div>
+
+    <!-- Modal for full-screen image view -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img id="modalImage" src="" alt="Full screen image">
+        </div>
+    </div>
+
+    <script>
+        // Function to generate a random color
+        function getRandomColor() {
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+
+        // Function to apply random filters to images
+        function applyRandomFilters() {
+            const images = document.querySelectorAll('.collage-img');
+            images.forEach(img => {
+                // Apply random hue rotation and brightness
+                const hue = Math.floor(Math.random() * 360);
+                const brightness = (Math.random() * 0.5 + 0.5).toFixed(2); // between 0.5 and 1.0
+                img.style.filter = `hue-rotate(${hue}deg) brightness(${brightness})`;
+            });
+        }
+
+        // Function to animate images on hover
+        function addHoverEffect() {
+            const images = document.querySelectorAll('.collage-img');
+            images.forEach(img => {
+                img.addEventListener('mouseover', () => {
+                    img.style.transform = 'scale(1.1)';
+                    img.style.borderColor = '#656363'; // Change border color on hover
+                    img.style.borderStyle = 'solid'; // Ensure border style is solid
+                    img.style.borderWidth = '2px'; // Set border width
+                });
+                
+                img.addEventListener('mouseout', () => {
+                    img.style.transform = 'scale(1)';
+                    img.style.borderColor = ''; // Reset border color
+                });
+
+                // Open modal on click
+                img.addEventListener('click', () => {
+                    const modal = document.getElementById('myModal');
+                    const modalImage = document.getElementById('modalImage');
+                    modal.style.display = 'flex';
+                    modalImage.src = img.src; // Set modal image source
+                });
+            });
+        }
+
+        
+        // Function to close the modal
+        function closeModal() {
+            const modal = document.getElementById('myModal');
+            modal.style.display = 'none';
+        }
+
+        // Apply effects on load
+        window.onload = () => {
+            applyRandomFilters();
+            addHoverEffect();
+        };
+
+        // Add event listener to close button
+        document.querySelector('.close').addEventListener('click', closeModal);
+
+        // Close modal if the user clicks outside of the image
+        window.addEventListener('click', (event) => {
+            if (event.target === document.getElementById('myModal')) {
+                closeModal();
+            }
+        });
+    </script>
 </body>
 </html>
